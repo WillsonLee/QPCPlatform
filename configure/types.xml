@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types>
+	<type>
+		<typeName>class pcl::PointCloud&lt;struct pcl::PointXYZRGB&gt;</typeName>
+		<displayName>PCXYZRGB</displayName>
+	</type>
+	<type>
+		<typeName>class pcl::PointCloud&lt;struct pcl::PointXYZ&gt;</typeName>
+		<displayName>PCXYZ</displayName>
+	</type>
+	<type>
+		<typeName>class std::vector&lt;class pcl::PointCloud&lt;struct pcl::PointXYZRGB&gt;,class Eigen::aligned_allocator&lt;class pcl::PointCloud&lt;struct pcl::PointXYZRGB&gt; &gt; &gt;</typeName>
+		<displayName>vector&lt;PCXYZRGB&gt;</displayName>
+	</type>
+	<type>
+		<typeName>class std::vector&lt;class pcl::PointCloud&lt;struct pcl::PointXYZ&gt;,class Eigen::aligned_allocator&lt;class pcl::PointCloud&lt;struct pcl::PointXYZ&gt; &gt; &gt;</typeName>
+		<displayName>vector&lt;PCXYZ&gt;</displayName>
+	</type>
+	<type>
+		<typeName>class std::vector&lt;class cv::Mat,class std::allocator&lt;class cv::Mat&gt; &gt;</typeName>
+		<displayName>vector&lt;cv::Mat&gt;</displayName>
+	</type>
+	<type>
+		<typeName>class std::vector&lt;class cv::RotatedRect,class std::allocator&lt;class cv::RotatedRect&gt; &gt;</typeName>
+		<displayName>vector&lt;cv::RotatedRect&gt;</displayName>
+	</type>
+</types>

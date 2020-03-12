@@ -1,0 +1,12 @@
+#ifndef CONVEXHULL_GLOBAL_H
+#define CONVEXHULL_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(CONVEXHULL_LIBRARY)
+#  define CONVEXHULLSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define CONVEXHULLSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // CONVEXHULL_GLOBAL_H

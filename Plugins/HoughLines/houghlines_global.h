@@ -1,0 +1,12 @@
+#ifndef HOUGHLINES_GLOBAL_H
+#define HOUGHLINES_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(HOUGHLINES_LIBRARY)
+#  define HOUGHLINESSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define HOUGHLINESSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // HOUGHLINES_GLOBAL_H

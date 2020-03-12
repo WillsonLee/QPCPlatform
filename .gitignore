@@ -1,0 +1,15 @@
+*.pro.user
+Debug
+Release
+*/Debug
+*/Release
+debug
+release
+*/debug
+*/release
+include/*
+!include/Any.h
+lib/*
+plugins/*
+*/Makefile*
+*/.qmake.stash
