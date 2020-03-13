@@ -1,6 +1,9 @@
 #ifndef ANY_H
 #define ANY_H
 #include <string>
+#ifdef linux
+#include <cxxabi.h>
+#endif
 
 #define TYPENAMEOFSTRING "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >"
 
@@ -33,12 +36,26 @@ public:
     */
     template<class ValueType>
     bool isCompatible(const ValueType& value) { return (std::string)(typeid(value).name()) == std::string(this->type); }
+    /**\brief 判断any中的数据与value类型是否一样（如果value也是Any类型，any与value必须都不为null且类型相同才返回true）
+     */
+    template<class ValueType>
+    bool ofSameType(const ValueType& value) { return isCompatible(value);}
     /**\brief 获取数据地址
     */
     void* getAddress() { return pData; }
     /**\brief 获取数据类型
     */
-    const char* getType() { return type; }
+    const std::string getType() {
+#ifdef _WIN32
+        return std::string(type);
+#endif
+#ifdef linux
+        int status;
+        char *ch=abi::__cxa_demangle(type,0,0,&status);
+        std::string t=ch==NULL?"null":std::string(ch);
+        return t;
+#endif
+    }
     /**\brief 判断any中是否未保存数据
     */
     bool isNull() { return pData == NULL; }
@@ -64,6 +81,7 @@ template<> inline bool Any::getData(Any &dst){dst.pData=this->pData;dst.type=thi
 template<> inline Any& Any::getData<Any>(){return Any().setData(*this);}
 template<> inline bool Any::isSameAs<Any>(Any &another){return this->pData==another.pData&&this->type==another.type;}
 template<> inline bool Any::isCompatible(const Any &dst){if(std::string(this->type)=="null")return true;return std::string(this->type)==std::string(dst.type);}
+template<> inline bool Any::ofSameType(const Any &dst){if(std::string(this->type)!="null"&&std::string(dst.type)!="null"&&std::string(this->type)==std::string(dst.type))return true;else return false;}
 
 
 #endif

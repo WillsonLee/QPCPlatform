@@ -74,7 +74,7 @@ void HoughLines::run()
     //4.调用setOutputs函数通知外界输出参数更新了
     cv::Mat src=Any(m_inputs[0]).getData<cv::Mat>();
     if(src.type()!=CV_8UC1){
-        throw std::exception("the hough line detection plugin only surpport 8bit single channel binary image!(type==CV_8UC1");
+        throw std::runtime_error("the hough line detection plugin only surpport 8bit single channel binary image!(type==CV_8UC1");
     }
     setProgress(10);
     src=src.clone();//houghLinesP may modify the image, so should be cloned in case changes happens

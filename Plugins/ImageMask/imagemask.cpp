@@ -61,10 +61,10 @@ void ImageMask::run()
     cv::Mat mask=Any(m_inputs[0]).getData<cv::Mat>();
     cv::Mat src=Any(m_inputs[1]).getData<cv::Mat>();
     if(mask.channels()!=1){
-        throw std::exception("mask image should be a single channel image!");
+        throw std::runtime_error("mask image should be a single channel image!");
     }
     if(mask.rows!=src.rows||mask.cols!=src.cols){
-        throw std::exception("mask image should be the same size as original image!");
+        throw std::runtime_error("mask image should be the same size as original image!");
     }
     if(mask.depth()!=CV_8U){
         mask.convertTo(mask,CV_8UC1);

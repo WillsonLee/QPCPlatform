@@ -93,7 +93,7 @@ void MatThreshold::run()
         this->typeCollection.remove("TRIANGLE");
         QList<QString> items=typeCollection.keys();
         pluginWidget->resetSelection(items);
-        throw std::exception("the thresh type THRESH_OTSU and THRESH_TRIANGLE can only be applied to single channel image!");
+        throw std::logic_error("the thresh type THRESH_OTSU and THRESH_TRIANGLE can only be applied to single channel image!");
     }
     else{
         if(!typeCollection.contains("OTSU")){

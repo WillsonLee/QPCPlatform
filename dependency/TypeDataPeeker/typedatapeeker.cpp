@@ -45,5 +45,5 @@ QString TypeDataPeeker::peek(Any data)
 
 QString TypeDataPeeker::type(Any data)
 {
-    return QString::fromStdString(std::string(data.getType()));
+    return QString::fromStdString(data.getType());
 }

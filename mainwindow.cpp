@@ -33,8 +33,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //设置根目录，安装程序后也是从QPCPlatform目录启动
+    //设置根目录为QPCPlatform目录
+#ifdef Q_OS_LINUX
+    //因为调试时运行目录是主目录下Debug/Release下；实际运行exe文件目录是在主目录下bin下，所以需要上升一级
+    QDir dir=QDir::current();
+    dir.cdUp();
+    sys.setProperty("rootPath",dir.absolutePath());
+#endif
+#ifdef Q_OS_WIN32
+    //在windows下则不一样，安装的exe放在主目录下而不是其下的bin目录内；调试时主目录也不是Debug/Release下
     sys.setProperty("rootPath",QDir::currentPath());
+#endif
     //初始化类型显示名称映射表
     initTypeMap();
     //加载系统配置文件
@@ -121,6 +130,10 @@ MainWindow::~MainWindow()
     //而此时主界面this并没有死,所以会接收该信号;但是主界面处理该信号的槽操作了TableWidget,这东西已经不在了,所以出错
     disconnect(this->workspace,0,this,0);
     delete ui;
+//    //不行，因为pluginDlls可能先析构了，在调用unloadPlugin时使用其元素会导致出错
+//    for(auto pluginName:*all_plugins){//卸载所有的插件
+//        unloadPlugin(pluginName);
+//    }
     if(all_plugins){
         delete all_plugins;
     }
@@ -165,7 +178,12 @@ void MainWindow::initSysConfig()
         sys.setProperty("folder"+i,paths.at(i).toElement().text());
     }
     QDomElement proPath=root.firstChildElement("projectPath");
-    sys.setProperty("projectPath",QDir(proPath.text()).absolutePath());
+    if(proPath.isNull()){
+        sys.setProperty("projectPath",sys.getProperty("rootPath")+"/Plugins");
+    }
+    else{
+        sys.setProperty("projectPath",QDir(proPath.text()).absolutePath());
+    }
 }
 
 void MainWindow::createDefaultSysConfig()
@@ -228,13 +246,14 @@ void MainWindow::loadPlugin(QString fileName)
     else{
         ui->statusBar->showMessage(QString("unable to load lib file:%1").arg(fileName));
     }
-    delete lib;
+//    delete lib;//不能删除，因为在unloadPLugin的时候需要用其来unload
 }
 
 void MainWindow::unloadPlugin(std::string pluginName)
 {
     if(pluginDlls.contains(pluginName)){
         pluginDlls[pluginName]->unload();
+        delete pluginDlls[pluginName];//注意删除指针指向的QLibrary对象
         pluginDlls.remove(pluginName);
     }
     Factory::Unregister(pluginName);
@@ -746,7 +765,13 @@ void MainWindow::on_actiontutorial_triggered()
 
 void MainWindow::on_actionLoad_L_triggered()
 {
-    QString fileName=QFileDialog::getOpenFileName(this,tr("open plugin library"),sys.getProperty("rootPath"),tr("dynamic library(*.dll)"));
+#ifdef Q_OS_WIN32
+    QString filters("dynamic library(*.dll)");
+#endif
+#ifdef Q_OS_LINUX
+    QString filters("shared library(*.so*)");
+#endif
+    QString fileName=QFileDialog::getOpenFileName(this,tr("open plugin library"),sys.getProperty("rootPath"),filters);
     this->loadPlugin(fileName);
     this->pluginConfig();
     this->arrangeToolBox();
@@ -774,7 +799,7 @@ void MainWindow::on_actionNew_N_triggered()
     QVBoxLayout *layout1=new QVBoxLayout();
     introPage->setLayout(layout1);
     IntroPageWidget *widgetIntro=new IntroPageWidget();
-    widgetIntro->initText("Untitled",this->sys.getProperty("projectPath"));
+    widgetIntro->initText("Untitled",this->sys.getProperty("projectPath",rootPath+"/Plugins"));
     layout1->addWidget(widgetIntro);
     //属性页
     QWizardPage *propPage=new QWizardPage();
@@ -783,7 +808,7 @@ void MainWindow::on_actionNew_N_triggered()
     QVBoxLayout *layout2=new QVBoxLayout();
     propPage->setLayout(layout2);
     PropPageWidget *widgetProp=new PropPageWidget();
-    widgetProp->initProps(true,false,2,2,rootPath+"/include",rootPath+"/dependency");
+    widgetProp->initProps(true,false,2,2,rootPath+"/include",rootPath+"/lib");
     layout2->addWidget(widgetProp);
     //确认页
     QWizardPage *confirmPage=new QWizardPage();
@@ -879,16 +904,13 @@ void MainWindow::on_actionNew_N_triggered()
             result=result.replace("TARGET_WIDGET_AUTO_REPLACED",WIDGET_NAME);//替换全大写的widget名
             result=result.replace("FILE_WIDGET_AUTO_REPLACED",widget_name);//替换全小写的widget名
             result=result.replace("TIME_STAMP_AUTO_REPLACED",QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));//替换时间戳
-            result=result.replace("QPCPLATFORM_INCLUDEPATH_AUTO_REPLACED",includePath);//替换包含目录
-            result=result.replace("REFLEX_PATH_AUTO_REPLACED",dependPath);//替换反射机制库依赖目录
-            result=result.replace("IPLUGIN_PATH_AUTO_REPLACED",dependPath);//替换插件接口库依赖目录
-#ifdef QT_NO_DEBUG
-            result=result.replace("DEBUG_DLL_PATH_AUTO_REPLACED","$$PWD/debug");
-            result=result.replace("RELEASE_DLL_PATH_AUTO_REPLACED",sys.getProperty("rootPath")+"/plugins");
-#else
-            result=result.replace("DEBUG_DLL_PATH_AUTO_REPLACED",sys.getProperty("rootPath")+"/plugins");
-            result=result.replace("RELEASE_DLL_PATH_AUTO_REPLACED","$$PWD/release");
-#endif
+            result=result.replace("QPCPLATFORM_INCLUDEPATH_AUTO_REPLACED","$$PWD/"+dir.relativeFilePath(includePath));//替换包含目录
+            result=result.replace("REFLEX_PATH_AUTO_REPLACED","$$PWD/"+dir.relativeFilePath(dependPath));//替换反射机制库依赖目录
+            result=result.replace("IPLUGIN_PATH_AUTO_REPLACED","$$PWD/"+dir.relativeFilePath(dependPath));//替换插件接口库依赖目录
+            //不区分debug与release，插件dll/so文件均直接导出到QPCPlatform/plugins下
+            QString rel_target_path=dir.relativeFilePath(sys.getProperty("rootPath")+"/plugins");
+            result=result.replace("DEBUG_DLL_PATH_AUTO_REPLACED","$$PWD/"+rel_target_path);
+            result=result.replace("RELEASE_DLL_PATH_AUTO_REPLACED","$$PWD/"+rel_target_path);
             result=result.replace("PROP_EMBEDED_AUTO_REPLACED",embeded);//替换是否内嵌界面属性
             result=result.replace("PROP_INPUT_AUTO_REPLACED",numInput);//替换输入参数个数
             result=result.replace("PROP_OUTPUT_AUTO_REPLACED",numOutput);//替换输出参数个数
@@ -972,7 +994,12 @@ void MainWindow::on_actionNew_N_triggered()
                 toFile(ts7.readAll(),pluginPath+"/"+pluginName+"/"+widget_name+".cpp");
                 widgetCpp.close();
             }
+#ifdef Q_OS_WIN32
             QString cmd="explorer file://"+pluginPath+"/"+pluginName;
+#endif
+#ifdef Q_OS_LINUX
+            QString cmd="browse file://"+pluginPath+"/"+pluginName;
+#endif
             QProcess::startDetached(cmd);
         }catch(std::exception &e){
             QMessageBox::warning(this,tr("Error"),tr("something happeded when open template files or create project files\nerror:\n")+QString::fromStdString(e.what()),QMessageBox::Cancel);

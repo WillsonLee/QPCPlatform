@@ -70,10 +70,10 @@ void Plotter2DWidget::setData(QVector<double> &x, QVector<double> &y)
     this->x=x;
     this->y=y;
     if(this->x.size()==0||this->y.size()==0){
-        throw std::exception("no input data!");
+        throw std::runtime_error("no input data!");
     }
     else if(this->x.size()!=this->y.size()!=0){
-        throw std::exception("dimensionality of input data x and y do not coincide!");
+        throw std::logic_error("dimensionality of input data x and y do not coincide!");
     }
     else{
        this->plotData();

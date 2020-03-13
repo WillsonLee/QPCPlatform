@@ -241,7 +241,7 @@ void SpacialCluster::run()
         this->xyz=2;
     }
     else{
-        throw std::exception("input type is not XYZ or XYZRGB type point cloud!");
+        throw std::invalid_argument("input type is not XYZ or XYZRGB type point cloud!");
     }
 }
 

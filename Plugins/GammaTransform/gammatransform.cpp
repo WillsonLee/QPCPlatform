@@ -63,7 +63,7 @@ void GammaTransform::run()
     cv::Mat src=Any(m_inputs[0]).getData<cv::Mat>();
     int channel=src.channels();
     if(src.type()!=CV_8UC(channel)){
-        throw std::exception("Plugin GammaTransform can only be applied to 8 bits image (Mat object of type CV_8UC(n)");
+        throw std::logic_error("Plugin GammaTransform can only be applied to 8 bits image (Mat object of type CV_8UC(n)");
     }
     setProgress(30);
     cv::Mat *dst=new cv::Mat();

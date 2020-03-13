@@ -40,26 +40,26 @@ unix {
 }
 
 
-INCLUDEPATH +=D:/workdir/Qt/QPCPlatform/include
+INCLUDEPATH +=$$PWD/../../include
 
-win32:CONFIG(release, debug|release): LIBS += -LD:/workdir/Qt/QPCPlatform/dependency/release/ -lReflex
-else:win32:CONFIG(debug, debug|release): LIBS += -LD:/workdir/Qt/QPCPlatform/dependency/debug/ -lReflex
-else:unix: LIBS += -LD:/workdir/Qt/QPCPlatform/dependency/ -lReflex
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../lib/ -lReflex
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../lib/ -lReflex
+else:unix: LIBS += -L$$PWD/../../lib/ -lReflex
 
 
-win32:CONFIG(release, debug|release): LIBS += -LD:/workdir/Qt/QPCPlatform/dependency/release/ -lIPlugin
-else:win32:CONFIG(debug, debug|release): LIBS += -LD:/workdir/Qt/QPCPlatform/dependency/debug/ -lIPlugin
-else:unix: LIBS += -LD:/workdir/Qt/QPCPlatform/dependency/ -lIPlugin
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../lib/ -lIPlugin
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../lib/ -lIPlugin
+else:unix: LIBS += -L$$PWD/../../lib/ -lIPlugin
 
+
+CONFIG(debug,debug|release){
+    DESTDIR = $$PWD/../../plugins
+}else{
+    DESTDIR = $$PWD/../../plugins
+}
 
 FORMS += \
     morphologywidget.ui
-
-CONFIG(debug,debug|release){
-    DESTDIR = D:/workdir/Qt/QPCPlatform/plugins
-}else{
-    DESTDIR = $$PWD/release
-}
 
 DISTFILES += \
     OpenCV.pri

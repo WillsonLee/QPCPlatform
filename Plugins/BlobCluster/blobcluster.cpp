@@ -77,7 +77,8 @@ void BlobCluster::run()
     //4.调用setOutputs函数通知外界输出参数更新了
     cv::Mat src=Any(m_inputs[0]).getData<cv::Mat>();
     if(src.type()!=CV_8UC1){
-        throw std::exception("plugin BlobCluster can only handle single channel binary image (image type()==CV_8UC1)");
+        std::logic_error le("plugin BlobCluster can only handle single channel binary image (image type()==CV_8UC1)");
+        throw std::exception(le);
     }
     cv::Mat *dst=new cv::Mat();
     cv::Mat stats;

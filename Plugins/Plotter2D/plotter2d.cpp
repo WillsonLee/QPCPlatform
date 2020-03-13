@@ -126,7 +126,7 @@ void Plotter2D::getInputs(QVector<double> &x, QVector<double> &y)
     Any xData=Any(m_inputs[0]);
     Any yData=Any(m_inputs[1]);
     if(xData.isNull()&&yData.isNull()){//两者都为NULL则没数据,不符合要求
-        throw std::exception("Both inputs x and y data are null!The plugin require at least one input to be valid!");
+        throw std::invalid_argument("Both inputs x and y data are null!The plugin require at least one input to be valid!");
     }
     std::string tx=std::string(xData.getType());
     std::string ty=std::string(yData.getType());
@@ -139,7 +139,7 @@ void Plotter2D::getInputs(QVector<double> &x, QVector<double> &y)
             x=QVector<double>::fromStdVector((std::vector<double>)(dst));
         }
         else{
-            throw std::exception("input data of cv::Mat type should be single row or single column!");
+            throw std::logic_error("input data of cv::Mat type should be single row or single column!");
         }
     }
     else if(tx==std::string(typeid(QVector<double>).name())){
@@ -150,7 +150,7 @@ void Plotter2D::getInputs(QVector<double> &x, QVector<double> &y)
     }
     else if(tx=="null"){}//留待之后处理
     else{
-        throw std::exception("data type of x is not allowed!Input x should be single row/col cv::Mat or a QVector<double> or a std::vector<double>!");
+        throw std::logic_error("data type of x is not allowed!Input x should be single row/col cv::Mat or a QVector<double> or a std::vector<double>!");
     }
     //数据y
     if(ty==std::string(typeid(cv::Mat).name())){
@@ -161,7 +161,7 @@ void Plotter2D::getInputs(QVector<double> &x, QVector<double> &y)
             y=QVector<double>::fromStdVector((std::vector<double>)(dst));
         }
         else{
-            throw std::exception("input data of cv::Mat type should be single row or single column!");
+            throw std::logic_error("input data of cv::Mat type should be single row or single column!");
         }
     }
     else if(ty==std::string(typeid(QVector<double>).name())){
@@ -172,7 +172,7 @@ void Plotter2D::getInputs(QVector<double> &x, QVector<double> &y)
     }
     else if(ty=="null"){}//留待之后处理
     else{
-        throw std::exception("data type of y is not allowed!Input y should be single row/col cv::Mat or a QVector<double> or a std::vector<double>!");
+        throw std::logic_error("data type of y is not allowed!Input y should be single row/col cv::Mat or a QVector<double> or a std::vector<double>!");
     }
     if(xData.isNull()){//如果x,y其中一个为NULL另一个不是,则为NULL的那个取用默认的递增数据
         x=QVector<double>(y.size());

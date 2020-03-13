@@ -101,15 +101,15 @@ void PCImageMask::run()
     //4.调用setOutputs函数通知外界输出参数更新了
     cv::Mat src=Any(m_inputs[0]).getData<cv::Mat>();
     if(src.type()!=CV_8UC1&&src.type()!=CV_32SC1&&src.type()!=CV_16UC1){
-        throw std::exception("the mask image can only be CV_8UC1 or CV_16UC1 or CV_32SC1 when the mask type is binary!");
+        throw std::invalid_argument("the mask image can only be CV_8UC1 or CV_16UC1 or CV_32SC1 when the mask type is binary!");
     }
     if(src.rows<1||src.cols<1){
-        throw std::exception("mask image less than one row or one col!");
+        throw std::logic_error("mask image less than one row or one col!");
     }
     if(std::string(Any(m_inputs[1]).getType())=="class pcl::PointCloud<struct pcl::PointXYZ>"){
         pcl::PointCloud<pcl::PointXYZ> *cloud=&(Any(m_inputs[1]).getData<pcl::PointCloud<pcl::PointXYZ> >());
         if(cloud->size()==0){
-            throw std::exception("number of points in the point cloud is zero!");
+            throw std::logic_error("number of points in the point cloud is zero!");
         }
         this->determineXYGsd(*cloud,src,0,50);
         Any out;
@@ -121,7 +121,7 @@ void PCImageMask::run()
     else if(std::string(Any(m_inputs[1]).getType())=="class pcl::PointCloud<struct pcl::PointXYZRGB>"){
         pcl::PointCloud<pcl::PointXYZRGB> *cloud=&(Any(m_inputs[1]).getData<pcl::PointCloud<pcl::PointXYZRGB> >());
         if(cloud->size()==0){
-            throw std::exception("number of points in the point cloud is zero!");
+            throw std::logic_error("number of points in the point cloud is zero!");
         }
         this->determineXYGsd(*cloud,src,0,50);
         Any out;
@@ -131,7 +131,7 @@ void PCImageMask::run()
         setOutputs(std::vector<Any>(1,out),std::vector<int>(1,1));
     }
     else{
-        throw std::exception("this plugin only supports point cloud with point type XYZ or XYZRGB!");
+        throw std::invalid_argument("this plugin only supports point cloud with point type XYZ or XYZRGB!");
     }
 }
 

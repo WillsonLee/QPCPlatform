@@ -62,8 +62,8 @@ void PCSerializer::run()
     //4.调用setOutputs函数通知外界输出参数更新了
     Any data(m_inputs[0]);
     setProgress(0);
-    if(!lyxutils::createFolder(folderName.toStdString())){
-        throw std::exception("output folder does not exist and can not be created!");
+    if(!lyxutils::debug::createFolder(folderName.toStdString())){
+        throw std::runtime_error("output folder does not exist and can not be created!");
     }
     setProgress(20);
     if(std::string(data.getType())==std::string(typeid(pcl::PointCloud<pcl::PointXYZ>).name())){
@@ -103,7 +103,7 @@ void PCSerializer::run()
         }
     }
     else{
-        throw std::exception("the input data should be a point cloud or a vector of point cloud whose point type is xyz or xyzrgb!");
+        throw std::invalid_argument("the input data should be a point cloud or a vector of point cloud whose point type is xyz or xyzrgb!");
     }
     setProgress(-1);
 }

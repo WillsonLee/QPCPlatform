@@ -102,7 +102,7 @@ void ThreeDToMat::run()
         }
         //划分网格投影
         if(this->GSD<=0){
-            throw std::exception("parameter GSD illegal! GSD should be greater than 0");
+            throw std::invalid_argument("parameter GSD illegal! GSD should be greater than 0");
         }
         int length=ceil((max_x-*min_x)/this->GSD);
         int width=ceil((max_y-*min_y)/this->GSD);
@@ -195,7 +195,7 @@ void ThreeDToMat::run()
         }
         //划分网格投影
         if(this->GSD<=0){
-            throw std::exception("parameter GSD illegal! GSD should be greater than 0");
+            throw std::invalid_argument("parameter GSD illegal! GSD should be greater than 0");
         }
         int length=ceil((max_x-*min_x)/this->GSD);
         int width=ceil((max_y-*min_y)/this->GSD);

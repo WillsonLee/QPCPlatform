@@ -42,13 +42,13 @@ unix {
 
 INCLUDEPATH +=QPCPLATFORM_INCLUDEPATH_AUTO_REPLACED
 
-win32:CONFIG(release, debug|release): LIBS += -LREFLEX_PATH_AUTO_REPLACED/release/ -lReflex
-else:win32:CONFIG(debug, debug|release): LIBS += -LREFLEX_PATH_AUTO_REPLACED/debug/ -lReflex
+win32:CONFIG(release, debug|release): LIBS += -LREFLEX_PATH_AUTO_REPLACED/ -lReflex
+else:win32:CONFIG(debug, debug|release): LIBS += -LREFLEX_PATH_AUTO_REPLACED/ -lReflex
 else:unix: LIBS += -LREFLEX_PATH_AUTO_REPLACED/ -lReflex
 
 
-win32:CONFIG(release, debug|release): LIBS += -LIPLUGIN_PATH_AUTO_REPLACED/release/ -lIPlugin
-else:win32:CONFIG(debug, debug|release): LIBS += -LIPLUGIN_PATH_AUTO_REPLACED/debug/ -lIPlugin
+win32:CONFIG(release, debug|release): LIBS += -LIPLUGIN_PATH_AUTO_REPLACED/ -lIPlugin
+else:win32:CONFIG(debug, debug|release): LIBS += -LIPLUGIN_PATH_AUTO_REPLACED/ -lIPlugin
 else:unix: LIBS += -LIPLUGIN_PATH_AUTO_REPLACED/ -lIPlugin
 
 

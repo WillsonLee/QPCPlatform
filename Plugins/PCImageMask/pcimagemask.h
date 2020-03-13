@@ -71,7 +71,7 @@ private:
                 double right=xGsd_max>yGsd_max?yGsd_max:xGsd_max;
                 double left=xGsd_min<yGsd_min?yGsd_min:xGsd_min;
                 if(left>right){
-                    throw std::exception("the image GSD cannot be automatically determined!Either the image area is not the same with the point cloud or the image has different GSD in x and y direction");
+                    throw std::runtime_error("the image GSD cannot be automatically determined!Either the image area is not the same with the point cloud or the image has different GSD in x and y direction");
                 }
                 else{
                     this->gsd=(left+right)/2;
@@ -91,7 +91,8 @@ private:
         int labelCount=0;
         //一定要先遍历一遍确定有多少个label然后直接生成一个这么大的vector而不能之后再push_back,会有什么Eigen的对齐问题,莫名其妙;
         //问题不在这里，而在于对齐，含有Eigen中类对象作为成员变量的类(比如这里的PointCloud)会有对齐的问题，生成其vector时要指定allocator
-        pcl::PointCloud<PointT>::CloudVectorType *vecOut=new pcl::PointCloud<PointT>::CloudVectorType;
+        std::vector<pcl::PointCloud<PointT>, Eigen::aligned_allocator<pcl::PointCloud<PointT> > > *vecOut=
+                new std::vector<pcl::PointCloud<PointT>, Eigen::aligned_allocator<pcl::PointCloud<PointT> > >();
         int factor=prog2-prog1;
         int shift=prog1;
         int ptsCount=0;

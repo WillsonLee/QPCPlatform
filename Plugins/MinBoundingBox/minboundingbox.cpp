@@ -70,7 +70,7 @@ void MinBoundingBox::run()
     //4.调用setOutputs函数通知外界输出参数更新了
     cv::Mat src=Any(m_inputs[0]).getData<cv::Mat>();
     if(src.type()!=CV_8UC1&&src.type()!=CV_16UC1&&src.type()!=CV_16SC1&&src.type()!=CV_32SC1&&src.type()!=CV_32FC1&&src.type()!=CV_64FC1){
-        throw std::exception("MinBoundingBox plugin only support single channel image of type 8UC1,16UC1,16SC1,32SC1,32FC1 or 64FC1!");
+        throw std::invalid_argument("MinBoundingBox plugin only support single channel image of type 8UC1,16UC1,16SC1,32SC1,32FC1 or 64FC1!");
     }
     setProgress(0);
     cv::Mat sigMat;

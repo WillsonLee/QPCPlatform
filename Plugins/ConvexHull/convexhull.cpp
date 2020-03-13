@@ -65,7 +65,7 @@ void ConvexHull::run()
     //4.调用setOutputs函数通知外界输出参数更新了
     cv::Mat src=Any(m_inputs[0]).getData<cv::Mat>();
     if(src.channels()!=1){
-        throw std::exception("the input image should be single channel binary or multi-label image!");
+        throw std::logic_error("the input image should be single channel binary or multi-label image!");
     }
     setProgress(0);
     if(binary){

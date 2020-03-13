@@ -40,16 +40,23 @@ unix {
 }
 
 
-INCLUDEPATH +=D:/workdir/QPCPlatform/include
+INCLUDEPATH +=$$PWD/../../include
 
-win32:CONFIG(release, debug|release): LIBS += -LD:/workdir/QPCPlatform/dependency/release/ -lReflex
-else:win32:CONFIG(debug, debug|release): LIBS += -LD:/workdir/QPCPlatform/dependency/debug/ -lReflex
-else:unix: LIBS += -LD:/workdir/QPCPlatform/dependency/ -lReflex
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../lib/ -lReflex
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../lib/ -lReflex
+else:unix: LIBS += -L$$PWD/../../lib/ -lReflex
 
 
-win32:CONFIG(release, debug|release): LIBS += -LD:/workdir/QPCPlatform/dependency/release/ -lIPlugin
-else:win32:CONFIG(debug, debug|release): LIBS += -LD:/workdir/QPCPlatform/dependency/debug/ -lIPlugin
-else:unix: LIBS += -LD:/workdir/QPCPlatform/dependency/ -lIPlugin
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../lib/ -lIPlugin
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../lib/ -lIPlugin
+else:unix: LIBS += -L$$PWD/../../lib/ -lIPlugin
+
+
+CONFIG(debug,debug|release){
+    DESTDIR = $$PWD/../../plugins
+}else{
+    DESTDIR = $$PWD/../../plugins
+}
 
 
 FORMS += \
@@ -60,9 +67,3 @@ DISTFILES += \
     PCL.pri
 include(OpenCV.pri)
 include(PCL.pri)
-
-CONFIG(debug,debug|release){
-    DESTDIR = D:/workdir/Qt/QPCPlatform/plugins
-}else{
-    DESTDIR = $$PWD/release
-}

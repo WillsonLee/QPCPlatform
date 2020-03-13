@@ -61,7 +61,7 @@ void AABoundingBox::run()
     //2.通过Any的数组m_inputs访问输入参数(如果有的话)
     //3.实现主要功能,在堆上开辟内存保存输出参数实际数据,用一个Any类型的std::vector保存输出参数
     //4.调用setOutputs函数通知外界输出参数更新了
-    if(std::string(m_inputs[0].getType())=="class pcl::PointCloud<struct pcl::PointXYZRGB>"){
+    if(m_inputs[0].ofSameType(pcl::PointCloud<pcl::PointXYZRGB>())){
         pcl::PointCloud<pcl::PointXYZRGB> *cloud=&m_inputs[0].getData<pcl::PointCloud<pcl::PointXYZRGB> >();
         if(cloud->size()==0){
             return;
@@ -93,7 +93,7 @@ void AABoundingBox::run()
         outs.push_back(Any().setData(*max_y));
         setOutputs(outs,std::vector<int>(4,1));
     }
-    else if(std::string(m_inputs[0].getType())=="class pcl::PointCloud<struct pcl::PointXYZ>"){
+    else if(m_inputs[0].ofSameType(pcl::PointCloud<pcl::PointXYZ>())){
         pcl::PointCloud<pcl::PointXYZ> *cloud=&m_inputs[0].getData<pcl::PointCloud<pcl::PointXYZ> >();
         if(cloud->size()==0){
             return;

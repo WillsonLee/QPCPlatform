@@ -45,7 +45,7 @@ void Flow::setEndNode(const QPointF &p)
 
 std::string Flow::peekType()
 {
-    return std::string(data.getType());
+    return data.getType();
 }
 
 bool Flow::dataIsNull()

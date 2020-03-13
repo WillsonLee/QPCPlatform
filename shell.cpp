@@ -562,7 +562,7 @@ void PluginWorker::run()
 #ifdef QT_NO_DEBUG
     //release版本下不允许任何异常导致程序崩溃，出现该异常时在debug下调试并确定异常类型然后在上面添加相应的捕捉处理
     catch(...){
-        emit std::exception("non std::exception occurred while plugin running\n! Some unknown error occurred!");
+        emit std::runtime_error("non std::exception occurred while plugin running\n! Some unknown error occurred!");
     }
 #endif
 }

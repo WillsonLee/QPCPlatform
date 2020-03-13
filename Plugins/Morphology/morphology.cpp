@@ -104,7 +104,7 @@ void Morphology::run()
     //4.调用setOutputs函数通知外界输出参数更新了
     cv::Mat src=Any(m_inputs[0]).getData<cv::Mat>();
     if(src.type()!=CV_8UC1&&allMorphTypes[morphType]==cv::MORPH_HITMISS){
-        throw std::exception("morphology operation \"hit or miss\" only supported for CV_8UC1 binary images!");
+        throw std::invalid_argument("morphology operation \"hit or miss\" only supported for CV_8UC1 binary images!");
     }
     if(src.depth()==CV_8U||src.depth()==CV_16U||src.depth()==CV_16S||src.depth()==CV_32S||src.depth()==CV_32F||src.depth()==CV_64F){
         cv::Mat *matOut=new cv::Mat();
@@ -124,7 +124,7 @@ void Morphology::run()
         setOutputs(std::vector<Any>(1,Any(*matOut)),std::vector<int>(1,1));
     }
     else{
-        throw std::exception("image depth error!Morphology operations can only be applied to image with depth==CV_8U||CV_16U||CV_16S||CV_32S||CV_32F||CV_64F");
+        throw std::logic_error("image depth error!Morphology operations can only be applied to image with depth==CV_8U||CV_16U||CV_16S||CV_32S||CV_32F||CV_64F");
     }
 }
 

@@ -21,7 +21,7 @@ void PCDisplayThread::setCloud(Any data)
 
 void PCDisplayThread::run()
 {
-    if(std::string(data.getType())=="class pcl::PointCloud<struct pcl::PointXYZ>"){
+    if(data.ofSameType(pcl::PointCloud<pcl::PointXYZ>())){
         pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=pcl::PointCloud<pcl::PointXYZ>::Ptr(
                     &(data.getData<pcl::PointCloud<pcl::PointXYZ> >()),[](pcl::PointCloud<pcl::PointXYZ>*){});
         boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer(new pcl::visualization::PCLVisualizer);
@@ -35,7 +35,7 @@ void PCDisplayThread::run()
 //            boost::this_thread::sleep(boost::posix_time::microseconds(100000));
         }
     }
-    else if(std::string(data.getType())=="class pcl::PointCloud<struct pcl::PointXYZRGB>"){
+    else if(data.ofSameType(pcl::PointCloud<pcl::PointXYZRGB>())){
         pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud=pcl::PointCloud<pcl::PointXYZRGB>::Ptr(
                     &(data.getData<pcl::PointCloud<pcl::PointXYZRGB> >()),[](pcl::PointCloud<pcl::PointXYZRGB>*){});
         boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer(new pcl::visualization::PCLVisualizer);
@@ -49,7 +49,7 @@ void PCDisplayThread::run()
 //            boost::this_thread::sleep(boost::posix_time::microseconds(100000));
         }
     }
-    else if(std::string(data.getType())==std::string(typeid(pcl::PointCloud<pcl::PointXYZ>::CloudVectorType).name())){
+    else if(data.ofSameType(pcl::PointCloud<pcl::PointXYZ>::CloudVectorType())){
         pcl::PointCloud<pcl::PointXYZ>::CloudVectorType &vecPC=data.getData<pcl::PointCloud<pcl::PointXYZ>::CloudVectorType>();
         pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
         boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer(new pcl::visualization::PCLVisualizer);
@@ -78,7 +78,7 @@ void PCDisplayThread::run()
             viewer->spinOnce(100);
         }
     }
-    else if(std::string(data.getType())==std::string(typeid(pcl::PointCloud<pcl::PointXYZRGB>::CloudVectorType).name())){
+    else if(data.ofSameType(pcl::PointCloud<pcl::PointXYZRGB>::CloudVectorType())){
         pcl::PointCloud<pcl::PointXYZRGB>::CloudVectorType &vecPC=data.getData<pcl::PointCloud<pcl::PointXYZRGB>::CloudVectorType>();
         pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud;
         boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer(new pcl::visualization::PCLVisualizer);

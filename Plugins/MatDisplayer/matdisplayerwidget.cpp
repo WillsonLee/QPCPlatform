@@ -37,7 +37,7 @@ void MatDisplayerWidget::setImage(cv::Mat mat)
         qImg.setColorTable(sColorTable);
     }
     else{
-        throw std::exception("image with two channels is unable to display,please convert it to single channel or three or four channel image!");
+        throw std::invalid_argument("image with two channels is unable to display,please convert it to single channel or three or four channel image!");
     }
     pix=QPixmap::fromImage(qImg);
     ui->imageLabel->setAlignment(Qt::AlignCenter);

@@ -71,7 +71,7 @@ void Colormap::run()
     //4.调用setOutputs函数通知外界输出参数更新了
     cv::Mat src=Any(m_inputs[0]).getData<cv::Mat>();
     if(src.channels()!=1){
-        throw std::exception("Colormap plugin only support single channel immage!");
+        throw std::logic_error("Colormap plugin only support single channel immage!");
     }
     int pro=0;
     float factor=randomColor?100:50;
@@ -190,11 +190,11 @@ double Colormap::accessMat(cv::Mat &src, int row, int col)
             return *src.ptr<double>(row,col);
         }
         else{
-            throw std::exception("In Colormap:mat access unsupported image type!");
+            throw std::runtime_error("In Colormap:mat access unsupported image type!");
         }
     }
     else{
-        throw std::exception("In Colormap:mat access out of range exception!");
+        throw std::runtime_error("In Colormap:mat access out of range exception!");
     }
 }
 
