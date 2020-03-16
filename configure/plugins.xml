@@ -1,6 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugins>
-	<plugin name="TestPlugin">
-		<group>FirstGroup</group>
+	<plugin name="PCDLoader">
+		<group>PointCloud</group>
+	</plugin>
+	<plugin name="AABoundingBox">
+		<group>PointCloud</group>
+	</plugin>
+	<plugin name="ThreeDToMat">
+		<group>PointCloud</group>
+	</plugin>
+	<plugin name="PCImageMask">
+		<group>PointCloud</group>
+	</plugin>
+	<plugin name="SpacialCluster">
+		<group>PointCloud</group>
+	</plugin>
+	<plugin name="GrayConverter">
+		<group>OpenCV</group>
+	</plugin>
+	<plugin name="MatAccess">
+		<group>OpenCV</group>
+	<plugin name="MatDisplayer">
+		<group>OpenCV</group>
+	</plugin>
+	<plugin name="MatLoader">
+		<group>OpenCV</group>
+	</plugin>
+	<plugin name="MatToType8U">
+		<group>OpenCV</group>
+	</plugin>
+	<plugin name="GammaTransform">
+		<group>OpenCV</group>
+	</plugin>
+	<plugin name="MatThreshold">
+		<group>OpenCV</group>
+	</plugin>
+	<plugin name="Morphology">
+		<group>OpenCV</group>
+	</plugin>
+	<plugin name="MatToFile">
+		<group>OpenCV</group>
+	</plugin>
+	<plugin name="BlobCluster">
+		<group>OpenCV</group>
+	</plugin>
+	<plugin name="Colormap">
+		<group>OpenCV</group>
+	</plugin>
+	<plugin name="MinBoundingBox">
+		<group>OpenCV</group>
+	</plugin>
+	<plugin name="Histogram">
+		<group>OpenCV</group>
+	</plugin>
+	<plugin name="Plotter2D">
+		<group>Visualization</group>
+	</plugin>
+	<plugin name="LoopControl">
+		<group>FlowControl</group>
+	</plugin>
+	<plugin name="RandomGenerator">
+		<group>TestPlugins</group>
+	</plugin>
+	<plugin name="AXToBthPlusC">
+		<group>TestPlugins</group>
 	</plugin>
 </plugin>

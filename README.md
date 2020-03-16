@@ -56,7 +56,7 @@
 4. 安装
 
    ```cmd
-   sudo ./install.sh
+   ./install.sh
    ```
    
    以上默认安装在主目录下`QPCPlatform`目录；或者指定安装路径：
@@ -65,5 +65,3 @@
    sudo ./install.sh /opt/QPCPlatform
    ```
    
-   
-
