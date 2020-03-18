@@ -71,7 +71,7 @@ std::vector<std::string> PCImageMask::getInputTypes()
 {
     std::vector<std::string> inputTypes;
     //这里设置输入参数的类型,inputTypes数组大小与getInputCount必须一致
-	inputTypes.push_back("class cv::Mat");
+	inputTypes.push_back("cv::Mat");
     inputTypes.push_back("null");
     
     return inputTypes;
@@ -106,7 +106,7 @@ void PCImageMask::run()
     if(src.rows<1||src.cols<1){
         throw std::logic_error("mask image less than one row or one col!");
     }
-    if(std::string(Any(m_inputs[1]).getType())=="class pcl::PointCloud<struct pcl::PointXYZ>"){
+    if(Any(m_inputs[1]).ofSameType(pcl::PointCloud<struct pcl::PointXYZ>())){
         pcl::PointCloud<pcl::PointXYZ> *cloud=&(Any(m_inputs[1]).getData<pcl::PointCloud<pcl::PointXYZ> >());
         if(cloud->size()==0){
             throw std::logic_error("number of points in the point cloud is zero!");
@@ -118,7 +118,7 @@ void PCImageMask::run()
         this->extractOutput(*cloud,src,out,prog1,prog2);
         setOutputs(std::vector<Any>(1,out),std::vector<int>(1,1));
     }
-    else if(std::string(Any(m_inputs[1]).getType())=="class pcl::PointCloud<struct pcl::PointXYZRGB>"){
+    else if(Any(m_inputs[1]).ofSameType(pcl::PointCloud<struct pcl::PointXYZRGB>())){
         pcl::PointCloud<pcl::PointXYZRGB> *cloud=&(Any(m_inputs[1]).getData<pcl::PointCloud<pcl::PointXYZRGB> >());
         if(cloud->size()==0){
             throw std::logic_error("number of points in the point cloud is zero!");

@@ -506,6 +506,9 @@ bool Shell::inputTypeCompatibilityCheck()
         if(flowInTypes[i]!=realTypes[i]&&realTypes[i]!="null"){//这里实际上只要插件的输入端口类型是"null"就表示接收任何类型
             allSame=false;
             inFlows[i]->setLineColor(Qt::red);//异常连接类型不符
+            emit announcement("error message from "+this->pluginName+this->instanceName+
+                              ":type incompatible,"+QString::fromStdString(flowInTypes[i])+"---->"
+                              +QString::fromStdString(realTypes[i]));
             inFlows[i]->freezeFlow(true);
         }
     }

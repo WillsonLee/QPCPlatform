@@ -36,7 +36,7 @@ std::vector<std::string> MatToFile::getInputTypes()
 {
     std::vector<std::string> inputTypes;
     //这里设置输入参数的类型,inputTypes数组大小与getInputCount必须一致
-	inputTypes.push_back("class cv::Mat");
+	inputTypes.push_back("cv::Mat");
     
     return inputTypes;
 }

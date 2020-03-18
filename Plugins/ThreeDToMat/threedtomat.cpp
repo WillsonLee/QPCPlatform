@@ -53,7 +53,7 @@ std::vector<std::string> ThreeDToMat::getOutputTypes()
     //这里设置输出参数的类型,outputTypes数组大小与getOutputCount必须一致
     outputTypes.push_back("double");
     outputTypes.push_back("double");
-	outputTypes.push_back("class cv::Mat");
+    outputTypes.push_back("cv::Mat");
     
     return outputTypes;
 }
@@ -69,7 +69,7 @@ void ThreeDToMat::run()
     if(m_inputs.size()!=1||Any(m_inputs[0]).isNull()){
         return;
     }
-    if(std::string(Any(m_inputs[0]).getType())=="class pcl::PointCloud<struct pcl::PointXYZRGB>"){
+    if(Any(m_inputs[0]).ofSameType(pcl::PointCloud<struct pcl::PointXYZRGB>())){
         pcl::PointCloud<pcl::PointXYZRGB> *cloud=&(Any(m_inputs[0]).getData<pcl::PointCloud<pcl::PointXYZRGB> >());
         if(cloud->size()==0){
             return;
@@ -162,7 +162,7 @@ void ThreeDToMat::run()
         }
         setOutputs(outs,std::vector<int>(3,1));
     }
-    if(std::string(Any(m_inputs[0]).getType())=="class pcl::PointCloud<struct pcl::PointXYZ>"){
+    if(Any(m_inputs[0]).ofSameType(pcl::PointCloud<struct pcl::PointXYZ>())){
         pcl::PointCloud<pcl::PointXYZ> *cloud=&(Any(m_inputs[0]).getData<pcl::PointCloud<pcl::PointXYZ> >());
         if(cloud->size()==0){
             return;

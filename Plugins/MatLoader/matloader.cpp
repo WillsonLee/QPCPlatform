@@ -51,7 +51,7 @@ std::vector<std::string> MatLoader::getOutputTypes()
 {
     std::vector<std::string> outputTypes;
     //这里设置输出参数的类型,outputTypes数组大小与getOutputCount必须一致
-    outputTypes.push_back("class cv::Mat");
+    outputTypes.push_back("cv::Mat");
 
     return outputTypes;
 }

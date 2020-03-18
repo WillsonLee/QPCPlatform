@@ -66,17 +66,17 @@ void PCSerializer::run()
         throw std::runtime_error("output folder does not exist and can not be created!");
     }
     setProgress(20);
-    if(std::string(data.getType())==std::string(typeid(pcl::PointCloud<pcl::PointXYZ>).name())){
+    if(data.ofSameType(pcl::PointCloud<pcl::PointXYZ>())){
         pcl::PointCloud<pcl::PointXYZ> &cloud=data.getData<pcl::PointCloud<pcl::PointXYZ> >();
         pcl::io::savePCDFile(QString(folderName+"/PointCloud.pcd").toStdString(),cloud);
         setProgress(100);
     }
-    else if(std::string(data.getType())==std::string(typeid(pcl::PointCloud<pcl::PointXYZRGB>).name())){
+    else if(data.ofSameType(pcl::PointCloud<pcl::PointXYZRGB>())){
         pcl::PointCloud<pcl::PointXYZRGB> &cloud=data.getData<pcl::PointCloud<pcl::PointXYZRGB> >();
         pcl::io::savePCDFile(QString(folderName+"/PointCloud.pcd").toStdString(),cloud);
         setProgress(100);
     }
-    else if(std::string(data.getType())==std::string(typeid(pcl::PointCloud<pcl::PointXYZ>::CloudVectorType).name())){
+    else if(data.ofSameType(pcl::PointCloud<pcl::PointXYZ>::CloudVectorType())){
         pcl::PointCloud<pcl::PointXYZ>::CloudVectorType &cloud_vec=data.getData<pcl::PointCloud<pcl::PointXYZ>::CloudVectorType>();
         int count=0;
         int pro=20;
@@ -89,7 +89,7 @@ void PCSerializer::run()
             }
         }
     }
-    else if(std::string(data.getType())==std::string(typeid(pcl::PointCloud<pcl::PointXYZRGB>::CloudVectorType).name())){
+    else if(data.ofSameType(pcl::PointCloud<pcl::PointXYZRGB>::CloudVectorType())){
         pcl::PointCloud<pcl::PointXYZRGB>::CloudVectorType &cloud_vec=data.getData<pcl::PointCloud<pcl::PointXYZRGB>::CloudVectorType>();
         int count=0;
         int pro=20;

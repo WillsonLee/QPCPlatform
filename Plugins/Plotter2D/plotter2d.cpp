@@ -131,7 +131,7 @@ void Plotter2D::getInputs(QVector<double> &x, QVector<double> &y)
     std::string tx=std::string(xData.getType());
     std::string ty=std::string(yData.getType());
     //数据x
-    if(tx==std::string(typeid(cv::Mat).name())){
+    if(tx==Any(cv::Mat()).getType()){
         cv::Mat src=xData.getData<cv::Mat>();
         if(src.rows==1||src.cols==1){
             cv::Mat dst;
@@ -142,10 +142,10 @@ void Plotter2D::getInputs(QVector<double> &x, QVector<double> &y)
             throw std::logic_error("input data of cv::Mat type should be single row or single column!");
         }
     }
-    else if(tx==std::string(typeid(QVector<double>).name())){
+    else if(tx==Any(QVector<double>()).getType()){
         x=xData.getData<QVector<double> >();
     }
-    else if(tx==std::string(typeid(std::vector<double>).name())){
+    else if(tx==Any(std::vector<double>()).getType()){
         x=QVector<double>::fromStdVector(xData.getData<std::vector<double> >());
     }
     else if(tx=="null"){}//留待之后处理
@@ -153,7 +153,7 @@ void Plotter2D::getInputs(QVector<double> &x, QVector<double> &y)
         throw std::logic_error("data type of x is not allowed!Input x should be single row/col cv::Mat or a QVector<double> or a std::vector<double>!");
     }
     //数据y
-    if(ty==std::string(typeid(cv::Mat).name())){
+    if(ty==Any(cv::Mat).getType()){
         cv::Mat src=yData.getData<cv::Mat>();
         if(src.rows==1||src.cols==1){
             cv::Mat dst;
@@ -164,10 +164,10 @@ void Plotter2D::getInputs(QVector<double> &x, QVector<double> &y)
             throw std::logic_error("input data of cv::Mat type should be single row or single column!");
         }
     }
-    else if(ty==std::string(typeid(QVector<double>).name())){
+    else if(ty==Any(QVector<double>()).getType()){
         y=yData.getData<QVector<double> >();
     }
-    else if(ty==std::string(typeid(std::vector<double>).name())){
+    else if(ty==Any(std::vector<double>()).getType()){
         y=QVector<double>::fromStdVector(yData.getData<std::vector<double> >());
     }
     else if(ty=="null"){}//留待之后处理

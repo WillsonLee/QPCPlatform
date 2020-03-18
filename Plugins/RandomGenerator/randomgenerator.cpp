@@ -49,7 +49,7 @@ std::vector<std::string> RandomGenerator::getOutputTypes()
     //这里设置输出参数的类型,outputTypes数组大小与getOutputCount必须一致
 	outputTypes.push_back("int");
     outputTypes.push_back("double");
-    outputTypes.push_back("class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >");
+    outputTypes.push_back("std::basic_string<char,struct std::char_traits<char>,std::allocator<char> >");
     
     return outputTypes;
 }

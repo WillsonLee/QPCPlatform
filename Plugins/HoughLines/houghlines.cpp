@@ -43,7 +43,7 @@ std::vector<std::string> HoughLines::getInputTypes()
 {
     std::vector<std::string> inputTypes;
     //这里设置输入参数的类型,inputTypes数组大小与getInputCount必须一致
-	inputTypes.push_back("class cv::Mat");
+	inputTypes.push_back("cv::Mat");
     
     return inputTypes;
 }
@@ -58,7 +58,7 @@ std::vector<std::string> HoughLines::getOutputTypes()
 {
     std::vector<std::string> outputTypes;
     //这里设置输出参数的类型,outputTypes数组大小与getOutputCount必须一致
-	outputTypes.push_back("class cv::Mat");
+    outputTypes.push_back("cv::Mat");
     outputTypes.push_back("std::vector<cv::Vec4i>");
     
     return outputTypes;

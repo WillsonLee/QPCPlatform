@@ -13,15 +13,23 @@ class Any
 {
 public:
     Any() :pData(NULL), type("null") {}
-    template<class ValueType>
-    Any(const ValueType& value) { setData(value); }
     /**\brief 保存任意数据value(如果value也是Any类型，则保存value中保存的数据)
     */
+    template<class ValueType>
+    Any(const ValueType& value) { setData(value); }
     /**
      * @brief 保存任意数据value(如果value也是Any类型，则保存value中保存的数据)
      */
     template<class ValueType>
-    Any& setData(const ValueType& value) { pData = (void*)(&value); type = typeid(value).name();return *this; }
+    Any& setData(const ValueType& value) {
+        pData = (void*)(&value);
+        type = typeid(value).name();
+#ifdef _WIN32
+        //windows下需要去掉类型名称中的class,struct字符串
+        type=stripClassStruct(string(type)).c_str();
+#endif
+        return *this;
+    }
     /**\brief 取出Any中保存的数据于value中，成功则返回true否则false(如果value也是Any类型，则让value保存相同的数据)
     */
     template<class ValueType>
@@ -35,7 +43,13 @@ public:
     /**\brief 断any中的数据与value类型是否一样(如果value也是Any类型，any的type为null即没有保存数据时,返回true;any的type不为null需要二者type一样时才返回true)
     */
     template<class ValueType>
-    bool isCompatible(const ValueType& value) { return (std::string)(typeid(value).name()) == std::string(this->type); }
+    bool isCompatible(const ValueType& value) {
+        char *valType=typeid(value).name();
+#ifdef _WIN32
+        valType=stripClassStruct(std::string(valType)).c_str();
+#endif
+        return (std::string)(valType) == std::string(this->type);
+    }
     /**\brief 判断any中的数据与value类型是否一样（如果value也是Any类型，any与value必须都不为null且类型相同才返回true）
      */
     template<class ValueType>
@@ -62,7 +76,13 @@ public:
     /**\brief 判断any中保存的数据与value是否一致(如果value也是Any类型则判断二者保存的数据是否一致)
     */
     template<class ValueType>
-    bool isSameAs(ValueType& value){return pData==(void*)(&value)&&type==typeid(value).name();}
+    bool isSameAs(ValueType& value){
+        char *valType=typeid(value).name();
+#ifdef _WIN32
+        valType=stripClassStruct(std::string(valType)).c_str();
+#endif
+        return pData==(void*)(&value)&&type==valType;
+    }
     /**\brief 将Any重置(指向NULL)
     */
     Any& reset(){this->pData=NULL;this->type="null";return *this;}
@@ -74,6 +94,21 @@ public:
 private:
     void* pData;
     const char* type;
+#ifdef _WIN32
+    inline string stripClassStruct(string str){
+        size_t pos = str.find("class ", 0);
+        while (pos < str.length()) {
+            str.replace(pos, 6, "");
+            pos = str.find("class ", pos++);
+        }
+        pos = str.find("struct ", 0);
+        while (pos < str.length()) {
+            str.replace(pos, 7, "");
+            pos = str.find("struct ", pos++);
+        }
+        return str;
+    }
+#endif
 };
 
 template<> inline Any& Any::setData<Any>(const Any& value) {this->pData = value.pData; this->type = value.type;return *this;}
@@ -82,6 +117,5 @@ template<> inline Any& Any::getData<Any>(){return Any().setData(*this);}
 template<> inline bool Any::isSameAs<Any>(Any &another){return this->pData==another.pData&&this->type==another.type;}
 template<> inline bool Any::isCompatible(const Any &dst){if(std::string(this->type)=="null")return true;return std::string(this->type)==std::string(dst.type);}
 template<> inline bool Any::ofSameType(const Any &dst){if(std::string(this->type)!="null"&&std::string(dst.type)!="null"&&std::string(this->type)==std::string(dst.type))return true;else return false;}
-
 
 #endif

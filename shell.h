@@ -66,6 +66,7 @@ public slots:
     void setRecord(Shell *target, QString pluginName, QString instanceName, int index, Any data);
 signals:
     void recordChanged();
+    void announcement(QString str);
 private:
     //以下数组必须始终保持大小一致
     QVector<QString> varNames;
@@ -135,6 +136,7 @@ signals:
     void progressChanged(int state);
     void progressVisibilityChanged(bool visible);
     void requestSelfDestroy(Shell *obj);
+    void announcement(QString message);
 private slots:
     void on_progressBar_valueChanged(int value);
     // 私有函数(辅助)

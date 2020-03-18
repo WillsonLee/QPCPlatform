@@ -382,6 +382,9 @@ void MainWindow::addPlugin(QString pluginName, QString instanceName, QPointF cen
     int h=70;
     shell->setGeometry(QRect(center.x()-w/2,center.y()-h/2,w,h));
     connect(shell,&Shell::mouseOperation,this,&MainWindow::handleBeginEndConnection);
+    connect(shell,&Shell::announcement,this,[&](QString message){
+        ui->statusBar->showMessage(message);
+    });
     shell->setVisible(true);
     shell->connectWorkspace(this->workspace);
     ui->centralWidget->update();
